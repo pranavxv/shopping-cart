@@ -1,0 +1,136 @@
+<section>
+    <div class="container">
+        <table class="table mt-5">
+            {{#if products}}
+            <thead>
+                <tr>
+                    <th scope="col">Item</th>
+                    <th scope="col">Title</th>
+                    <th>Price </th>
+                    <th scope="col">Quantity</th>
+                    <th></th>
+                </tr>
+            </thead>
+            {{/if}}
+            <tbody>
+                {{#each products}}
+                <tr id="product-{{this.product._id}}">
+ 
+                    <td><img style="width:70px;height: 70px;" src="/product-images/{{this.product._id}}.jpg" alt=""></td>
+                    <td>{{this.product.Name}}</td>
+                    <td>Rs.{{this.product.Price}}</td>
+
+                    <td>
+                        <button class="cart-items-count me-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">-</button>
+                        <span id="{{this.product._id}}">{{this.quantity}}</span>
+                        <button class="cart-items-count ms-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)">+</button>
+                    </td>
+                    <td>
+                        {{!-- <a href="/remove-product/'{{this._id}}','{{this.product._id}}'" class="btn btn-danger mt-2">Remove</a> --}}
+                        <button class="btn btn-danger mt-2" onclick="removeProduct('{{this._id}}','{{this.product._id}}')">Remove</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <hr>
+        {{#if products}}
+        <div class="float-end pe-5">
+            <h4 class="float-end me-5">Total: Rs.<span id="total">{{totalValue}}</span></h4>
+            
+            <a href="/place-order" class="btn btn-success mt-2 me-4  float-end" style="width: 65%;"><b>Place Order</b></a>
+        </div>
+        {{else}}
+        <div class="text-center">
+            <h3>Your cart is empty!</h3>
+            <h5>Add items to it now</h5>
+        <a href="/" class="btn btn-success mt-2">Shop now</a>
+        </div>
+        {{/if}}
+        
+        
+        
+    </div>
+</section>
+
+<script>
+    function removeProduct(cartId,proId){
+        //console.log('remove item function called on front')
+        let value = confirm('Are you Sure To Delete')
+        if(value == true){
+            console.log('removed') 
+            $.ajax({
+            url:'/remove-product',
+            data:{   
+                cart:cartId,
+                product:proId,
+            },
+            method:'post',
+            success:(response)=>{
+                if(response.removeProduct){
+                   location.reload();
+                }else{
+                    document.getElementById(proId).innerHTML=quantity
+                }
+            }
+        })  
+        }else{
+            console.log('errorrrr')
+        }
+        
+    }
+    function changeQuantity(cartId,proId,userId,count){
+        let quantity=parseInt(document.getElementById(proId).innerHTML)
+        count=parseInt(count)
+
+        if(count == -1 && quantity == 1){
+            let value = confirm('Are You Sure To Delete');
+            if (value == true){
+            $.ajax({
+                url:'/change-product-quantity',
+            data:{
+                user:userId,
+                cart:cartId,
+                product:proId,
+                count:count,
+                quantity:quantity
+            },
+            method:'post',
+            success : (response)=>{
+                location.reload()
+            }
+            })   
+            }
+
+            
+        }else{
+        
+            $.ajax({
+            url:'/change-product-quantity',
+            data:{
+                user:userId,
+                cart:cartId,
+                product:proId,
+                count:count,
+                quantity:quantity
+            },
+            method:'post',
+            success:(response)=>{   
+                console.log(response)
+                if(response.removeProduct){
+                    alert("product Removed From Cart")
+                    location.reload()
+
+                }else{
+                    document.getElementById(proId).innerHTML=quantity+count
+                    document.getElementById('total').innerHTML=response.total
+                }
+            }
+        })
+        }
+        
+        
+    }
+    
+    
+</script>

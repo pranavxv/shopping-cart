@@ -1,0 +1,52 @@
+<section>
+    <div class="container mt-5">
+        <div class="row">
+            {{#each products}}
+
+            <div class="col-md-3 p-3">
+                <div class="card" style="width: 15rem;height: 24rem;">
+                    <img class="card-img-top"
+                        src="/product-images/{{this.product._id}}.jpg" alt="Card image cap"
+                        style="height: 12rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{this.product.Name}}</h5>
+                            <p class="card-text">Rs.{{this.product.Price}}</p>
+                            <p class="card-text">Quantity:{{this.quantity}}</p>
+                            <p class="card-text">{{this.Description}}</p>
+                            
+                            <a class="btn btn-primary" href="#" onclick="cancelProduct('{{userId}}','{{this.products}}')" >Cancel Order</a>
+                        </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</section>
+
+<script>
+    function cancelProduct(proid,userId){
+        console.log('remove item function called on front')
+        let value = confirm('Are you Sure To Delete')
+        if(value == true){
+            console.log('removed') 
+            $.ajax({
+            url:'/cancel-product',
+            data:{   
+                user:userId
+                product:proId,
+            },
+            method:'post',
+            success:(response)=>{
+                if(response.removeProduct){
+                   location.reload();
+                }else{
+                    //document.getElementById(proId).innerHTML=quantity
+                    location.reload();
+                }
+            }
+        })  
+        }else{
+            console.log('errorrrr')
+        }
+    }
+</script>

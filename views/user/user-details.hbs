@@ -1,0 +1,32 @@
+<h3 style="margin:15px; text-align: center;">Hey!CodeCart Customer</h3>
+<div class="container">
+    <div class="col-md-4 m-auto" style="text-align: center;">
+        <div>
+            <a href="/orders" class="btn btn-outline-secondary" style="margin: 10px;width: 102px;">Orders</a>
+            <a href="/cart" class="btn btn-outline-secondary">Cart</a>
+        </div>
+        <div class="rows">
+            <a href="/" class="btn btn-outline-success" style="width: 171px;margin-left: 10px;">Home Page</a>
+        </div>
+        <div class="row mt-5">
+            <div class="shadow p-3 mb-5 bg-white rounded">
+                <h5>User Details</h5>
+
+                <form action="/user-details/{{user._id}}"  method="post">
+                    <label for="" class="float-start">Name</label>
+                    <input type="text" name="Name" class="form-control" value="{{user.Name}}">
+                    <div class="row">
+                    <a href="">change password</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-success mt-3">Submit</button>
+                </form>
+
+            </div>
+        </div>
+        <div class="mt-4">
+            <a href="/logout" class="btn btn-outline-danger" style="width: 200px;">Logout</a>
+        </div>
+    </div>
+
+</div>

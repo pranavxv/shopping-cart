@@ -1,0 +1,101 @@
+<!--================ confirmation part start =================-->
+<section class="confirmation_part padding_top">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="confirmation_tittle mt-2">
+          <span>Thank you. Your order has been received.</span>
+        </div>
+      </div>
+      <div class="col-lg-6 col-lx-4 mt-3">
+        <div class="single_confirmation_details">
+          <h4>order info</h4>
+          <ul>
+            <li>
+              <p>order number <span>: {{order._id}}</span></p>
+            </li>
+            <li>
+              <p>date <span>: {{order.date}}</span></p>
+            </li>
+            <li>
+              <p>total <span>: Rs {{order.totalAmount}} </span></p>
+            </li>
+            <li>
+              <p>payment method <span>: {{order.paymentMethod}}</span></p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-6 col-lx-4 mt-5" >
+        <div class="single_confirmation_details">
+          <h4>Shipping Address</h4>
+          <ul>
+            <li>
+              <p>name <span>: {{order.deliveryDetails.name}}</span></p>
+            </li>
+            <li>
+              <p>mobile <span>: {{order.deliveryDetails.mobile}}</span></p>
+            </li>
+            <li>
+              <p>address <span>: {{order.deliveryDetails.address}}</span></p>
+              {{!-- <span>&nbsp;{{order.deliveryDetails.addressLine2}}</span> --}}
+            </li>
+            <li>
+              <p>pincode <span>: {{order.deliveryDetails.pincode}}</span></p>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="order_details_iner">
+          <h3>Order Details</h3>
+          <table class="table table-borderless">
+            <thead>
+              <tr>
+                <th scope="col" colspan="2">Product</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each products}}
+              <tr>
+                <th colspan="2"><span>{{product.Name}}</span></th>
+                <th>{{quantity}}</th>
+                <th> <span>Rs {{product.Price}}</span></th>
+              </tr>
+              {{/each}}
+
+              <tr>
+                <th colspan="3">Subtotal</th>
+                <th> <span>Rs&nbsp; <span id="subTotal">{{order.totalAmount}}</span></th>
+              </tr>
+              
+            </tbody>
+            <tfoot>
+              <tr>
+                <th scope="col" colspan="3">Quantity</th>
+                <th scope="col">Rs&nbsp; <span id="totalPrice">{{order.quantity}} </span></th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+
+  </div>
+  <div class="text-center">
+      <a class="btn btn-outline-primary" href="/" role="button">Home Page</a>
+    </div>
+</section>
+<!--================ confirmation part end =================-->
+
+<script>
+  let subTotal = parseInt(document.getElementById('subTotal').innerHTML)
+  let shippingCharge = parseInt(document.getElementById('shipping').innerHTML)
+  document.getElementById('totalPrice').innerHTML = subTotal + shippingCharge;
+</script>
